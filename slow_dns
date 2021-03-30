@@ -32,8 +32,8 @@ installslowdns() {
         iptables -F >/dev/null 2>&1
         iptables -I INPUT -p udp --dport 5300 -j ACCEPT
         iptables -t nat -I PREROUTING -i $interface -p udp --dport 53 -j REDIRECT --to-ports 5300
-        ip6tables -I INPUT -p udp --dport 5300 -j ACCEPT
-        ip6tables -t nat -I PREROUTING -i $interface -p udp --dport 53 -j REDIRECT --to-ports 5300
+        iptables-save > /etc/iptables/rules.v4
+        iptables-restore < /etc/iptables/rules.v4
         chmod +x /bin/slowdns
         [[ $(grep -wc 'DNSStubListener=no' /etc/systemd/resolved.conf) == '0' ]] && {
             echo 'DNSStubListener=no' > /etc/systemd/resolved.conf
