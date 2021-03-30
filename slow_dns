@@ -74,10 +74,10 @@ initslow() {
         fi
         [[ $opcc == '1' ]] 
         cd /etc/SSHPlus/dns
-        screen -dmS slow_dns ./dns-server -udp :5300 -privkey-file server.key ${ns} 0.0.0.0:${ptdns} >/dev/null 2>&1
+        screen -dmS slow_dns ./dns-server -udp :5300 -mtu 1232 -privkey-file server.key ${ns} 0.0.0.0:${ptdns} >/dev/null 2>&1
         keypub=$(cat $DIR/server.pub)
         cd $HOME
-        echo "ps x | grep 'slow_dns' | grep -v 'grep' || screen -dmS slow_dns $DIR/dns-server -udp :5300 -privkey-file /etc/SSHPlus/dns/server.key ${ns} 0.0.0.0:${ptdns}" >> /etc/autostart
+        echo "ps x | grep 'slow_dns' | grep -v 'grep' || screen -dmS slow_dns $DIR/dns-server -udp :5300 -mtu 1232 -privkey-file /etc/SSHPlus/dns/server.key ${ns} 0.0.0.0:${ptdns}" >> /etc/autostart
         tmx='curl -sO https://raw.githubusercontent.com/script90/34/main/tools/slowdns && chmod +x slowdns && ./slowdns'
         echo -e "\n${GREEN}SLOWDNS ATIVADO !${SCOLOR}"
         echo -e "\n${YELLOW}COMANDO TERMUX${SCOLOR}: ${tmx} ${ns} ${keypub}"
